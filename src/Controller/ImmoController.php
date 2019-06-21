@@ -40,26 +40,30 @@ class ImmoController extends AbstractController
     /**
      * @route("/immo/new", name="immo_create")
      */
-    public function create(Request $request, objectManager $manager){
+    public function create(Request $request, ObjectManager $manager)
+    {
         $article = new Article();
 
         $form = $this->createFormBuilder($article)
-        ->add('title', TextType::class,[
-            'attr' => [
-                'placeholder' => 'nom du bien']])
-            
+                    ->add('title')
+                    ->add('image')
+                    ->add('content')
+
+                    ->getForm();
+
+        $form->handleRequest($request);
         
-        ->add('image', TextType::class,[
-            'attr' => [
-                'placeholder' => 'image']])
+        if($form->isSubmitted() && $form->isValid()) {
+            $article->setCreatedAt(new \DateTime());
+            
+            $manager->persist($article);
+            $manager->flush();
+            
+            return $this->redirectToRoute('immo_show', ['id' => $article->getId()]);
+            
+        } 
 
-        ->add('content', TextareaType::class,[
-            'attr' => [
-                'placeholder' => 'descriptif']])
-
-        ->getForm();
-
-
+        
         return $this->render('immo/create.html.twig',[
             'formArticle' => $form->createView()
         ]);

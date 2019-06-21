@@ -8,9 +8,11 @@
 
 {{ form_start(formArticle) }}
 
-    {{ form_widget(formArticle) }}
+    {{ form_row(formArticle.title, {'attr': {'placeholder' : "Nom du bien"}}) }}
+    {{ form_row(formArticle.content, {'attr': {'placeholder' : "Description du bien"}}) }}
+    {{ form_row(formArticle.image, {'attr': {'placeholder' : "image"}}) }}
 
-    <button type="submit" class="btn btn-success">Ajouter le bien</button>
+    <button type="submit" class="btn btn-success">envoyer</button>
 
 {{ form_end(formArticle) }}
 
