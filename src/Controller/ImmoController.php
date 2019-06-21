@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Repository\ArticleRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -11,9 +12,8 @@ class ImmoController extends AbstractController
     /**
      * @Route("/immo", name="immo")
      */
-    public function index()
+    public function index(ArticleRepository $repo)
     {
-        $repo = $this->getDoctrine()->getRepository(Article::class);
 
         $articles = $repo->findAll();
 
@@ -33,11 +33,8 @@ class ImmoController extends AbstractController
     /**
      * @route ("/immo/{id}", name="immo_show")
      */
-    public function show($id){
-        $repo = $this->getDoctrine()->getRepository(Article::class);
-
-        $article = $repo->find($id);
-
+    public function show(Article $article){
+    
         return $this->render('immo/show.html.twig', [
             'article' => $article
         ]);
